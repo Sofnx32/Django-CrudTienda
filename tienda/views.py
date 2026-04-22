@@ -80,3 +80,19 @@ def ver_carrito(request):
         'total': total,
         'categorias': categorias   
     })
+
+def eliminar_del_carrito(request, id):
+    carrito = request.session.get('carrito', {})
+
+    id = str(id)
+
+    if id in carrito:
+        if carrito[id] > 1:
+            carrito[id] -= 1
+        else:
+            del carrito[id]
+
+    request.session['carrito'] = carrito
+    request.session.modified = True
+
+    return redirect('ver_carrito')
