@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!-- HERO -->
+<div class="bg-primary text-white text-center p-5 rounded mb-4 shadow-sm">
+    <h1 class="display-5 fw-bold">Bienvenido a MiTienda 🛒</h1>
+    <p class="lead">Encuentra los mejores productos al mejor precio</p>
+    <a href="{% url 'producto' %}" class="btn btn-light btn-lg mt-3">
+        
+    </a>
+</div>
+
+<!-- TÍTULO -->
+<h2 class="mb-4 text-center fw-bold">🔥 Productos Destacados</h2>
+
+<div class="row">
+
+    {% for p in productos %}
+    <div class="col-md-4 col-lg-4 mb-4">
+        <div class="card shadow-sm h-100 border-0">
+
+            <!-- Imagen -->
+            <div class="position-relative">
+                {% if p.imagen %}
+                    <img src="{{ p.imagen.url }}" class="card-img-top" style="height:250px; object-fit:cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/300" class="card-img-top">
+                {% endif %}
+
+                <!-- Badge stock -->
+                {% if p.stock > 0 %}
+                    <span class="badge bg-success position-absolute top-0 end-0 m-2">Disponible</span>
+                {% else %}
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">Agotado</span>
+                {% endif %}
+            </div>
+
+            <div class="card-body text-center d-flex flex-column">
+
+                <!-- Nombre -->
+                <h5 class="card-title fw-bold">{{ p.nombre }}</h5>
+
+                <!-- Categoría -->
+                <p class="text-muted small mb-1">{{ p.categoria.nombre }}</p>
+
+                <!-- Precio -->
+                <p class="text-success fw-bold fs-5">S/ {{ p.precio }}</p>
+
+                <!-- Botón -->
+                <div class="mt-auto">
+                    <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-success w-100">
+                        🛒 Comprar
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% empty %}
+        <div class="text-center">
+            <p class="text-muted">No hay productos disponibles</p>
+        </div>
+    {% endfor %}
+
+</div>
+
+<!-- BOTÓN -->
+<div class="text-center mt-4">
+    <a href="{% url 'producto' %}" class="btn btn-outline-primary btn-lg">
+        Ver todos los productos
+    </a>
+</div>
+
+{% endblock %}

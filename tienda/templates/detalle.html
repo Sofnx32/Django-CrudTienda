@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row">
+
+    <!-- Imagen -->
+    <div class="col-md-6">
+        {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" class="img-fluid rounded">
+        {% else %}
+            <img src="https://via.placeholder.com/500" class="img-fluid">
+        {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="col-md-6">
+        <h2>{{ producto.nombre }}</h2>
+
+        <p class="text-muted">{{ producto.categoria.nombre }}</p>
+
+        <h3 class="text-success">S/ {{ producto.precio }}</h3>
+
+        {% if producto.stock > 0 %}
+            <span class="badge bg-success">Disponible</span>
+        {% else %}
+            <span class="badge bg-danger">Agotado</span>
+        {% endif %}
+
+        <p class="mt-3">
+            Producto de alta calidad disponible en nuestra tienda.
+        </p>
+
+        <!-- BOTÓN COMPRAR -->
+        {% if producto.stock > 0 %}
+            <a href="{% url 'agregar_carrito' producto.id %}" class="btn btn-success w-100">
+                🛒 Comprar
+            </a>
+        {% else %}
+            <button class="btn btn-secondary btn-lg mt-3" disabled>
+                Sin stock
+            </button>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

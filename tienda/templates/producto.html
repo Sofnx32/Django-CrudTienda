@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2 class="mb-4 text-center fw-bold">🛍️ Productos</h2>
+
+<div class="row">
+
+    {% for p in productos %}
+    <div class="col-md-4 col-lg-4 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+
+            <!-- Imagen + badge -->
+            <div class="position-relative">
+                {% if p.imagen %}
+                    <img src="{{ p.imagen.url }}" class="card-img-top" style="height:250px; object-fit:cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/300" class="card-img-top">
+                {% endif %}
+
+                {% if p.stock > 0 %}
+                    <span class="badge bg-success position-absolute top-0 end-0 m-2">
+                        Disponible
+                    </span>
+                {% else %}
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                        Agotado
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="card-body text-center d-flex flex-column">
+
+                <!-- Nombre -->
+                <h5 class="card-title fw-bold">{{ p.nombre }}</h5>
+
+                <!-- Categoría -->
+                <p class="text-muted small mb-1">
+                    {{ p.categoria.nombre }}
+                </p>
+
+                <!-- Precio -->
+                <p class="text-success fw-bold fs-5 mb-3">
+                    S/ {{ p.precio }}
+                </p>
+
+                <!-- Botones -->
+                <div class="mt-auto">
+
+                    <!-- Ver detalle (IMPORTANTE) -->
+                    <a href="{% url 'detalle_producto' p.id %}" class="btn btn-outline-primary w-100 mb-2">
+                        Ver detalle
+                    </a>
+                        
+
+                    <!-- Comprar -->
+                    {% if p.stock > 0 %}
+                        <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-success w-100">
+                            🛒 Comprar
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary w-100" disabled>
+                            Sin stock
+                        </button>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% empty %}
+        <div class="text-center">
+            <p class="text-muted">No hay productos registrados</p>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
